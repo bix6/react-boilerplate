@@ -160,3 +160,75 @@ html {
     box-sizing: inherit;
 }
 ```
+
+## Setup Router
+- `npm i react-router-dom`
+- Wrap the App inside `index.js` in BrowserRouter
+```
+import { BrowserRouter } from "react-router-dom";
+
+ReactDOM.render(
+    <BrowserRouter>
+        <App />
+    </BrowserRouter>,
+    document.getElementById('root')
+);
+```
+- Create a Route in `App.js`:
+- Can also use `exact path` instead of `path` for a perfect match
+```
+import { Route } from 'react-router-dom';
+
+<Route path='/' component={ Header } />
+```
+- Then create a Link in `Header.js`:
+```
+import { Link } from 'react-router-dom';
+
+<Link to='/'>
+    <h1>Click Header To Go Home</h1>
+</Link>
+```
+- To only select one route at a time use `<Switch>`:
+- Selects the first match it finds
+```
+import { Route, Switch } from 'react-router-dom';
+
+<Switch>
+    <Route exact path='/' component={ Header } />
+    <Route path='/about' component={ AboutHeader }>
+</Switch>
+```
+- Update Smoke Tests to wrap components in BrowserRouter:
+```
+ReactDOM.render(
+    <BrowserRouter>
+        <App />
+    </BrowserRouter>, 
+    div);
+```
+
+## DefaultProps
+- Declare inside class with:
+```
+static defaultProps = {
+    prop1: 'my prop'
+}
+```
+- Or declare outside of the class with:
+```
+ComponentName.defaultProps = {
+    prop1: 'my prop'
+}
+```
+- Access with: `this.props.prop1`
+
+## PropTypes
+- `npm i prop-types`
+- `import PropTypes from 'prop-types';`
+- Declare with:
+```
+ComponentName.propTypes = {
+    prop1: PropTypes.string.isRequired
+}
+```
