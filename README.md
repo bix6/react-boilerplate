@@ -2,15 +2,39 @@
 
 ## Create a New Project
 - `cd` into parent folder
-- `npx create-react-app new-app-name`
+- `npx create-react-app --use-npm new-app-name`
 - `cd` into folder
-- `npm i`
+- `npm i` (superfluous?)
+- `npm i react-router-dom`
+- `npm i enzyme enzyme-adapter-react-16 enzyme-to-json --save-dev`
 - `npm audit fix`
 - Optional:
     - `cd ./src`
     - `rm serviceWorker.js App.css logo.svg`
     - `cd ..`
-- Update `./src/App.js`:
+- Copy the code in from the various files or go through them individually below:
+    - App.js
+    - App.test.js
+    - index.css
+    - index.js
+    - setupTests.js
+    - LandingPage Folder (Example of Child Component)
+
+- Update `./src/App.js` (2 methods):
+```
+import React from 'react';
+
+class App extends React.Component {
+    render() {
+        return (
+            <h1>App</h1>
+        );
+    }
+}
+
+export default App;
+```
+- Or use a function:
 ```
 import React from 'react';
 
@@ -24,15 +48,17 @@ function App() {
 
 export default App;
 ```
+
 - Update `./src/index.js`:
 ```
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './App';
 import './index.css';
+import App from './App';
 
 ReactDOM.render(<App />, document.getElementById('root'));
 ```
+
 - `npm run start`
 
 ## Setup Smoke Test
@@ -51,7 +77,7 @@ describe('App Component', () => {
 })
 ```
 
-## Setup Enzyme (With Snapshot Test)
+## Setup Enzyme and Snapshot Tests
 - `npm i enzyme enzyme-adapter-react-16 enzyme-to-json --save-dev`
 - Update `src/setupTests.js`:
 ```
@@ -60,6 +86,7 @@ import Adapter from 'enzyme-adapter-react-16';
 
 configure({ adapter: new Adapter() });
 ```
+
 - Update `App.test.js` by inserting:
 ```
 import { shallow } from 'enzyme';
@@ -70,6 +97,7 @@ it('Snapshot: renders empty', () => {
     expect(toJson(wrapper)).toMatchSnapshot();
 })
 ```
+
 - Use this to simulate button clicks:
 ```
 it('closes the first tab and opens any clicked tab', () => {
@@ -174,6 +202,7 @@ ReactDOM.render(
     document.getElementById('root')
 );
 ```
+
 - Create a Route in `App.js`:
 - Can also use `exact path` instead of `path` for a perfect match
 ```
@@ -181,6 +210,7 @@ import { Route } from 'react-router-dom';
 
 <Route path='/' component={ Header } />
 ```
+
 - Then create a Link in `Header.js`:
 ```
 import { Link } from 'react-router-dom';
@@ -189,8 +219,9 @@ import { Link } from 'react-router-dom';
     <h1>Click Header To Go Home</h1>
 </Link>
 ```
+
 - To only select one route at a time use `<Switch>`:
-- Selects the first match it finds
+    - Selects the first match it finds
 ```
 import { Route, Switch } from 'react-router-dom';
 
@@ -199,6 +230,7 @@ import { Route, Switch } from 'react-router-dom';
     <Route path='/about' component={ AboutHeader }>
 </Switch>
 ```
+
 - Update Smoke Tests to wrap components in BrowserRouter:
 ```
 ReactDOM.render(
@@ -215,12 +247,14 @@ static defaultProps = {
     prop1: 'my prop'
 }
 ```
+
 - Or declare outside of the class with:
 ```
 ComponentName.defaultProps = {
     prop1: 'my prop'
 }
 ```
+
 - Access with: `this.props.prop1`
 
 ## PropTypes
@@ -232,3 +266,158 @@ ComponentName.propTypes = {
     prop1: PropTypes.string.isRequired
 }
 ```
+
+## Context
+- Create `./src/NameContext.js` with desired form:
+```
+import React from 'react';
+
+const CounterContext = React.createContext({
+    count: 0,
+    increaseCount: () => {}
+})
+
+export default CounterContext;
+```
+
+- Import Context into main App and set it up in the render:
+```
+import React from 'react';
+import Widget from './Widget/Widget';
+import CounterContext from './CounterContext';
+
+class App extends React.Component {
+    state = {
+        count: 10
+    }
+
+    handleIncreaseCount = () => {
+        this.setState({
+            count: this.state.count + 1
+        })
+    }
+
+    render() {
+        const contextValue = {
+            count: this.state.count,
+            increaseCount: this.handleIncreaseCount
+        }
+
+        return (
+            <CounterContext.Provider value={ contextValue }>
+                <div className="App">
+                    <Widget />
+                </div>
+            </CounterContext.Provider>
+        );
+    }
+}
+
+export default App;
+```
+
+- Use Context in child class:
+```
+import React from 'react';
+import CounterContext from '../CounterContext';
+
+class Counter extends React.Component {
+
+    static contextType = CounterContext;
+
+    state = {
+        count: 0
+    };
+
+    handleClick = () => {
+        this.setState({
+            count: this.state.count + 1
+        })
+    }
+
+    render() {
+        return (
+            <div className="Counter">
+                <p>The Count is: { this.state.count }</p>
+                <button type="button" onClick={ this.handleClick }>Click Me</button>
+                <p>The Context Count is: { this.context.count }</p>
+                <button type="button" onClick={ () => this.context.increaseCount() }>Click Me</button>
+            </div>
+        )
+    }
+}
+
+export default Counter;
+```
+
+- Or Use Context in a function with Consumer: 
+```
+import React from 'react';
+import LanguageContext from './LanguageContext';
+
+export default function LangControls(props) {
+    return (
+        <LanguageContext.Consumer>
+            {(value) => {
+                return (
+                    <>
+                        <button
+                            onClick={() => props.onSetLang('en-GB')}
+                            disabled={value.lang === 'en-GB'}>
+                            British{' '}
+                            <span role="img" aria-label="en-GB">GB</span>
+                        </button>
+                        {' '}
+                        <button
+                            onClick={() => props.onSetLang('en-US')}
+                            disabled={value.lang === 'en-US'}>
+                            American{' '}
+                            <span role="img" aria-label="en-US">US</span>
+                        </button>
+                        {' '}
+                        <button
+                            onClick={() => props.onSetLang('ko')}
+                            disabled={value.lang === 'ko'}>
+                            Korean{' '}
+                            <span role="img" aria-label="ko">KR</span>
+                        </button>
+                    </>
+                );
+            }}
+        </LanguageContext.Consumer>
+    );
+}
+```
+
+## Deploy to Vercel
+1. Ensure on latest code branch
+2. Remove vulnerabilities
+3. Add Environment Variables
+4. Run tests
+5. Run a new build
+6. Deploy
+
+- Create `./public/now.json`:
+```
+{
+    "version": 2,
+    "name": "project-name",
+    "alias": "project-alias"
+}
+```
+
+- Setup scripts:
+```
+"scripts": {
+    "start": "react-scripts start",
+    "prebuild": "CI=true react-scripts test --colors",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "predeploy": "npm run build",
+    "deploy": "now --prod ./build",
+    "postdeploy": "now alias -A ./build/now.json"
+},
+```
+
+- `npm run deploy` to run the sequence and deploy 
