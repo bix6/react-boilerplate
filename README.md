@@ -398,11 +398,15 @@ export default function LangControls(props) {
 6. Deploy
 
 - Create `./public/now.json`:
+    - Routes are used to route everything to index.html so the routing can happen in our app
+        - Without this reload will cause issues as the routes won't be found
 ```
 {
     "version": 2,
-    "name": "project-name",
-    "alias": "project-alias"
+    "routes": [
+        { "handle": "filesystem" },
+        { "src": "/.*", "dest": "/index.html" }
+    ]
 }
 ```
 
@@ -416,7 +420,6 @@ export default function LangControls(props) {
     "eject": "react-scripts eject",
     "predeploy": "npm run build",
     "deploy": "now --prod ./build",
-    "postdeploy": "now alias -A ./build/now.json"
 },
 ```
 
