@@ -1,6 +1,7 @@
 # React Client Setup
 
 ## Create a New Project
+
 - `cd` into parent folder
 - `npx create-react-app --use-npm new-app-name`
 - `cd` into folder
@@ -9,18 +10,20 @@
 - `npm i enzyme enzyme-adapter-react-16 enzyme-to-json --save-dev`
 - `npm audit fix`
 - Optional:
-    - `cd ./src`
-    - `rm serviceWorker.js App.css logo.svg`
-    - `cd ..`
+  - `cd ./src`
+  - `rm serviceWorker.js App.css logo.svg`
+  - `cd ..`
 - Copy the code in from the various files or go through them individually below:
-    - App.js
-    - App.test.js
-    - index.css
-    - index.js
-    - setupTests.js
-    - LandingPage Folder (Example of Child Component)
+
+  - App.js
+  - App.test.js
+  - css-defaults/
+  - index.js
+  - setupTests.js
+  - LandingPage Folder (Example of Child Component)
 
 - Update `./src/App.js` (2 methods):
+
 ```
 import React from 'react';
 
@@ -34,7 +37,9 @@ class App extends React.Component {
 
 export default App;
 ```
+
 - Or use a function:
+
 ```
 import React from 'react';
 
@@ -50,6 +55,7 @@ export default App;
 ```
 
 - Update `./src/index.js`:
+
 ```
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -62,7 +68,9 @@ ReactDOM.render(<App />, document.getElementById('root'));
 - `npm run start`
 
 ## Setup Smoke Test
+
 - Update `App.test.js`:
+
 ```
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -78,8 +86,10 @@ describe('App Component', () => {
 ```
 
 ## Setup Enzyme and Snapshot Tests
+
 - `npm i enzyme enzyme-adapter-react-16 enzyme-to-json --save-dev`
 - Update `src/setupTests.js`:
+
 ```
 import { configure } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
@@ -88,6 +98,7 @@ configure({ adapter: new Adapter() });
 ```
 
 - Update `App.test.js` by inserting:
+
 ```
 import { shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
@@ -99,6 +110,7 @@ it('Snapshot: renders empty', () => {
 ```
 
 - Use this to simulate button clicks:
+
 ```
 it('closes the first tab and opens any clicked tab', () => {
   const wrapper = shallow(<Tabs tabs={tabsProp} />)
@@ -108,6 +120,9 @@ it('closes the first tab and opens any clicked tab', () => {
 ```
 
 ## Setup index.css with Defaults, Meyer Reset and border-box
+
+- These have been separated out into 3 files held in `css-defaults/`
+
 ```
 /* create-react-app defaults */
 body {
@@ -127,7 +142,7 @@ code {
 
 
 /* Eric Meyer Reset */
-/* http://meyerweb.com/eric/tools/css/reset/ 
+/* http://meyerweb.com/eric/tools/css/reset/
    v2.0 | 20110126
    License: none (public domain)
 */
@@ -141,8 +156,8 @@ b, u, i, center,
 dl, dt, dd, ol, ul, li,
 fieldset, form, label, legend,
 table, caption, tbody, tfoot, thead, tr, th, td,
-article, aside, canvas, details, embed, 
-figure, figcaption, footer, header, hgroup, 
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
 menu, nav, output, ruby, section, summary,
 time, mark, audio, video {
 	margin: 0;
@@ -153,7 +168,7 @@ time, mark, audio, video {
 	vertical-align: baseline;
 }
 /* HTML5 display-role reset for older browsers */
-article, aside, details, figcaption, figure, 
+article, aside, details, figcaption, figure,
 footer, header, hgroup, menu, nav, section {
 	display: block;
 }
@@ -190,8 +205,10 @@ html {
 ```
 
 ## Setup Router
+
 - `npm i react-router-dom`
 - Wrap the App inside `index.js` in BrowserRouter
+
 ```
 import { BrowserRouter } from "react-router-dom";
 
@@ -205,6 +222,7 @@ ReactDOM.render(
 
 - Create a Route in `App.js`:
 - Can also use `exact path` instead of `path` for a perfect match
+
 ```
 import { Route } from 'react-router-dom';
 
@@ -212,6 +230,7 @@ import { Route } from 'react-router-dom';
 ```
 
 - Then create a Link in `Header.js`:
+
 ```
 import { Link } from 'react-router-dom';
 
@@ -221,7 +240,8 @@ import { Link } from 'react-router-dom';
 ```
 
 - To only select one route at a time use `<Switch>`:
-    - Selects the first match it finds
+  - Selects the first match it finds
+
 ```
 import { Route, Switch } from 'react-router-dom';
 
@@ -232,16 +252,19 @@ import { Route, Switch } from 'react-router-dom';
 ```
 
 - Update Smoke Tests to wrap components in BrowserRouter:
+
 ```
 ReactDOM.render(
     <BrowserRouter>
         <App />
-    </BrowserRouter>, 
+    </BrowserRouter>,
     div);
 ```
 
 ## DefaultProps
+
 - Declare inside class with:
+
 ```
 static defaultProps = {
     prop1: 'my prop'
@@ -249,6 +272,7 @@ static defaultProps = {
 ```
 
 - Or declare outside of the class with:
+
 ```
 ComponentName.defaultProps = {
     prop1: 'my prop'
@@ -258,9 +282,11 @@ ComponentName.defaultProps = {
 - Access with: `this.props.prop1`
 
 ## PropTypes
+
 - `npm i prop-types`
 - `import PropTypes from 'prop-types';`
 - Declare with:
+
 ```
 ComponentName.propTypes = {
     prop1: PropTypes.string.isRequired
@@ -268,7 +294,9 @@ ComponentName.propTypes = {
 ```
 
 ## Context
+
 - Create `./src/NameContext.js` with desired form:
+
 ```
 import React from 'react';
 
@@ -281,6 +309,7 @@ export default CounterContext;
 ```
 
 - Import Context into main App and set it up in the render:
+
 ```
 import React from 'react';
 import Widget from './Widget/Widget';
@@ -317,6 +346,7 @@ export default App;
 ```
 
 - Use Context in child class:
+
 ```
 import React from 'react';
 import CounterContext from '../CounterContext';
@@ -350,7 +380,8 @@ class Counter extends React.Component {
 export default Counter;
 ```
 
-- Or Use Context in a function with Consumer: 
+- Or Use Context in a function with Consumer:
+
 ```
 import React from 'react';
 import LanguageContext from './LanguageContext';
@@ -390,6 +421,7 @@ export default function LangControls(props) {
 ```
 
 ## Deploy to Vercel
+
 1. Ensure on latest code branch
 2. Remove vulnerabilities
 3. Add Environment Variables
@@ -398,8 +430,9 @@ export default function LangControls(props) {
 6. Deploy
 
 - Create `./public/now.json`:
-    - Routes are used to route everything to index.html so the routing can happen in our app
-        - Without this reload will cause issues as the routes won't be found
+  - Routes are used to route everything to index.html so the routing can happen in our app
+    - Without this reload will cause issues as the routes won't be found
+
 ```
 {
     "version": 2,
@@ -411,6 +444,7 @@ export default function LangControls(props) {
 ```
 
 - Setup scripts:
+
 ```
 "scripts": {
     "start": "react-scripts start",
@@ -423,4 +457,4 @@ export default function LangControls(props) {
 },
 ```
 
-- `npm run deploy` to run the sequence and deploy 
+- `npm run deploy` to run the sequence and deploy

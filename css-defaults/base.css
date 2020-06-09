@@ -1,0 +1,12 @@
+/* Set Base Font Size and Border Box */
+
+html {
+  box-sizing: border-box;
+  font-size: 10px;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
