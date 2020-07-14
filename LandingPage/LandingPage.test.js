@@ -6,7 +6,7 @@ import { BrowserRouter } from "react-router-dom";
 import LandingPage from "./LandingPage";
 
 describe("LandingPage Component", () => {
-  it("Smoke Test: Renders Empty", () => {
+  it("Smoke Test: Default", () => {
     const div = document.createElement("div");
     ReactDOM.render(
       <BrowserRouter>
@@ -17,7 +17,7 @@ describe("LandingPage Component", () => {
     ReactDOM.unmountComponentAtNode(div);
   });
 
-  it("Snapshot Test: Empty", () => {
+  it("Snapshot Test: Default", () => {
     const wrapper = shallow(<LandingPage />);
     expect(toJson(wrapper)).toMatchSnapshot();
   });

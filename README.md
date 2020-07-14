@@ -17,12 +17,19 @@
 
   - App.js
   - App.test.js
+<<<<<<< HEAD
   - index.css
   - index.js
   - setupTests.js
   - LandingPage Folder (Example of Child Component)
   - config.js
   - Move `example.env` to `.env.local`
+=======
+  - css-defaults/
+  - index.js
+  - setupTests.js
+  - LandingPage Folder (Example of Child Component)
+>>>>>>> 9f9ee7a049fccb47d7d2270af9be6ab3b595e603
 
 - Update `./src/App.js` (2 methods):
 
@@ -123,6 +130,11 @@ it('closes the first tab and opens any clicked tab', () => {
 
 ## Setup index.css with Defaults, Meyer Reset and border-box
 
+<<<<<<< HEAD
+=======
+- These have been separated out into 3 files held in `css-defaults/`
+
+>>>>>>> 9f9ee7a049fccb47d7d2270af9be6ab3b595e603
 ```
 /* create-react-app defaults */
 body {
@@ -458,6 +470,7 @@ export default function LangControls(props) {
 ```
 
 - `npm run deploy` to run the sequence and deploy
+<<<<<<< HEAD
 
 ## WebSockets / socket.io
 
@@ -469,3 +482,5 @@ import io from "socket.io-client";
 import config from "./config";
 const socket = io.connect(config.API_ENDPOINT);
 ```
+=======
+>>>>>>> 9f9ee7a049fccb47d7d2270af9be6ab3b595e603
